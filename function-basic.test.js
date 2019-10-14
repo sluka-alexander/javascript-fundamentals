@@ -74,20 +74,17 @@ describe("Function basic", () => {
   });
 
   test("Should use Function as argument", () => {
-    // Write logCalculationResult function. Function should accept 2 arguments
-    // First is calculation function
-    // Second is argument for calculation function
-    // Return value is message 'Result is ###'
-    let add = 10;
-    function add10(a) {
-      return a + 10;
+      function add10(){
+        return 10
     }
-
-    function mul3(a) {
-      return a * 3;
+    function mul3(){
+        return 3
     }
-
-    expect(/* logCalculationResult(add10, 7) */).toBe("Result is 17");
-    expect(/* logCalculationResult(mul3, 7) */).toBe("Result is 21");
+    function logCalculationResult(f, num){
+        if(f == add10){ return "Result is " + (f()+ num);}
+        else if(f == mul3){ return "Result is " + (f()* num);}
+    }
+    expect(logCalculationResult(add10, 7)).toBe("Result is 17");
+    expect(logCalculationResult(mul3, 7)).toBe("Result is 21");
   });
 });

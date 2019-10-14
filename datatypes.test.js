@@ -77,7 +77,7 @@ describe("Data types", () => {
 
       expect(a + b + c).toBe(140);
       expect(b * a + c).toBe(400);
-      expect((b * c)- (c * a)).toBe(2000);
+      expect((b * c) - (c * a)).toBe(2000);
       expect(b * c + b * a).toBe(3300);
       // TODO: write 3 own test
     });
