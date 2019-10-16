@@ -10,17 +10,22 @@ describe('Function and closure', () => {
       return x * 3;
     }
 
-    function compose(){
-        //TODO: implement
+    function compose(f,g){
+        return function (x) {
+          return f(g(x));
+        }
     }
-
     expect( compose(  add5, mul3)(2) ).toBe(add5(mul3(2)));
   });
 
   test('Should create new user with unique number identifier using increment', () => {
-    function createUser(){
-       //TODO: implement
+    let id = 0;
+
+    function createUser(name){
+      id++;
+      return {name: name, id: id}
     }
+
     expect( createUser("Ivan") ).toStrictEqual({ name: 'Ivan', id: 1 });
     expect( createUser("Petr").name ).toBe('Petr');
     expect( createUser("Anna").id ).toBe(3);
@@ -28,9 +33,17 @@ describe('Function and closure', () => {
 
   test('Should create function that each time return new value incremented by incrementValue and start from start', () => {
     function createIncrementor(start, incrementValue) {
-      // TODO: implement
+      let currentCount = 0;
+      return function() {
+        currentCount++
+        if (currentCount == 1){
+          return start;
+        }
+        else {
+          return start += incrementValue;
+        }
+      };
     }
-
 
     const nextFrom10By7 = createIncrementor(10, 7);
     expect(nextFrom10By7()).toBe(10);
@@ -42,7 +55,7 @@ describe('Function and closure', () => {
     function solution1(from, to) {
       // TODO: fix me
       const result = [];
-      for (var i = from; i <= to; i++) {
+      for (let i = from; i <= to; i++) {
         result.push(function() {
           return i;
         });
@@ -53,7 +66,7 @@ describe('Function and closure', () => {
     function solution2(from, to) {
       // TODO: fix me
       const result = [];
-      for (var i = from; i <= to; i++) {
+      for (let i = from; i <= to; i++) {
         result.push(function() {
           return i;
         });
@@ -122,7 +135,9 @@ describe('Function and closure', () => {
 
   test('Should create multiply function', () => {
     function multiply(a){
-      // TODO: implement
+      return function (n) {
+        return a*n;
+      }
     }
     let mul5 = multiply(5);
     let mul20 = multiply(20);
