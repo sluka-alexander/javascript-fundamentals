@@ -20,7 +20,6 @@ describe('Function and closure', () => {
 
   test('Should create new user with unique number identifier using increment', () => {
     let id = 0;
-
     function createUser(name){
       id++;
       return {name: name, id: id}
@@ -84,24 +83,24 @@ describe('Function and closure', () => {
   });
 
   test('Should works as expected. Fix me', () => {
-    let a = 0;
     function foo(callback) {
-      function inner() {
-        // DON"T CHANGE ME
-        a++;
-        return a;
+          let a = 10;
+          function inner() {
+              // DON"T CHANGE ME
+              a++;
+              return a;
+          }
+          return {
+              fromInner: inner,
+              fromCallback: callback()
+          };
       }
-      return {
-        fromInner: inner,
-        fromCallback: callback
-      };
-    }
     function getCallbackFn() {
+        let a = 0;
       return function callbackFn() {
-        // DON'T change me
-        a += 2;
+        a += 2;// DON'T change me
         return a;
-      };
+     };
     }
 
     const fn1 = foo(getCallbackFn);
@@ -120,7 +119,19 @@ describe('Function and closure', () => {
   test('Should use private property', () => {
     // Function should return object with 2 methods: setValue and getValue.
     function createTestObject(){
-       // TODO: implement
+        let Value;
+
+        function setValue(newValue) {
+            return Value = newValue;
+        }
+
+        function getValue() {
+            return Value;
+        }
+        return {
+            setValue:  setValue,
+            getValue : getValue
+        };
     }
 
     let obj1 = createTestObject();
@@ -154,8 +165,11 @@ describe('Function and closure', () => {
     }
 
     function calcCall(func) {
-      // TODO: implement
-      return [func, () => 0]; // CHANGE TOO
+      let value = 0;
+      return [() => {
+        value++;
+        return func();
+      }, () => value];
     }
 
     const [callFn, getFnCount] = calcCall(fn);
@@ -175,11 +189,22 @@ describe('Function and closure', () => {
 
   test('Should cache the result of function with single argument', () => {
     function memoize(fn) {
-      // TODO: implement
+      let cache = {
+        argument: null,
+        value: null
+      };
+      return n => {
+        const arg = n;
+        return cache.argument === arg ? cache.value : (function(){
+          cache.argument = arg;
+          return cache.value = fn(n);
+        })();
+      };
     }
 
     // DON'T CHANGE.
     let invokesCount = 0;
+
     function formula(x) {
       // DON'T CHANGE.
       invokesCount++;
@@ -214,6 +239,12 @@ describe('Function and closure', () => {
 
     function logMe(fn) {
       // TODO: implement
+      return () => {
+        logger.logStart(fn.name);
+        fn();
+        logger.logEnd(fn.name);
+        return fn.name;
+      };
     }
 
 
@@ -231,7 +262,14 @@ describe('Function and closure', () => {
     }
 
     function once(fn) {
-      // TODO: implement
+        return function output(){
+          if(callsCount = 0){
+            return callsCount;
+          }
+          else {
+            fn();
+          }
+        };
     }
 
     const initialize = once(init);
@@ -244,7 +282,9 @@ describe('Function and closure', () => {
 
   test('Creates a function that invokes func with partials prepended to the arguments it receives. ', () => {
     function partial(fn, arg1) {
-      // TODO: implement
+      return function (arg2) {
+        return fn(arg1,arg2);
+      };
     }
 
 
